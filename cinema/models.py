@@ -19,30 +19,28 @@ class Genre(models.Model):
 
 
 class Actor(models.Model):
-    first_name = models.CharField(
-        max_length=255
-    )
-    last_name = models.CharField(
+    full_name = models.CharField(
         max_length=255
     )
 
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+        return self.full_name
 
 
 class Producer(models.Model):
-    first_name = models.CharField(
+    full_name = models.CharField(
         max_length=255
     )
-    last_name = models.CharField(
-        max_length=255
-    )
+
+    def __str__(self) -> str:
+        return self.full_name
 
 
 class Movie(models.Model):
     title = models.CharField(
         max_length=255
     )
+    description = models.TextField()
     release_date = models.DateField()
     rating = models.IntegerField()
     country = models.CharField(
