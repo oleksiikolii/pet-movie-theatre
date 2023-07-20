@@ -46,10 +46,22 @@
            name="movie_session_id",
            value="{{ moviesession.id }}"
     >
-  <input
+  {% if user.is_authenticated %}
+    <input
           type="submit"
           value="Purchase"
       >
+    {% else %}
+    <input
+          type="submit"
+          value="Purchase"
+          disabled
+      >
+    <span> You need to
+    <a href="{% url 'cinema:login' %}">login</a>
+     first</span>
+  {% endif %}
+
   </form>
 
 {% endblock %}

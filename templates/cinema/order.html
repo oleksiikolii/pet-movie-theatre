@@ -2,16 +2,44 @@
 
 {% block content %}
   <h1>Lets imagine here you've paid for tickets</h1>
+
   <h3>Your tickets</h3>
+
   {% for ticket in ticket_list.all %}
-{#    <p>{{ ticket.movie_session }}, row:{{ ticket.row }}, seat: {{ ticket.seat }}</p>#}
-    <div class="card" style="margin-bottom: 10px;">
-      <div class="card-body">
-        <h5 class="card-title">{{ ticket.movie_session.movie.title }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ ticket.movie_session.show_time }}</h6>
-        <a href="#" class="card-link">Download PDF</a>
+
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          {% load static %}
+            <img src="{% static ticket.qr_code %}" alt=""
+                 class="card-img-top float-right"
+            >
+        </div>
+
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              {{ ticket.movie_session.movie.title }}
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {{ ticket.movie_session }}
+            </h6>
+            <p class="card-text">
+              ROW: <b>{{ ticket.row }}</b>, SEAT: <b>{{ ticket.seat }}</b>
+              <br>
+              HALL: <b>{{ ticket.movie_session.cinema_hall.name }}</b>
+              <br>
+            </p>
+            <p class="card-text">
+            </p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
       </div>
     </div>
+
   {% endfor %}
+
+  <a href="{% url 'cinema:logout' %}">Logout</a>
 
 {% endblock %}

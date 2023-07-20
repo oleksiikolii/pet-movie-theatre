@@ -92,7 +92,7 @@ class MovieSession(models.Model):
     show_time = models.DateTimeField()
 
     def __str__(self) -> str:
-        return f"{self.movie.title} {str(self.show_time)}"
+        return f"{self.show_time.strftime('%a %d %b %Y, %H:%M')}"
 
 
 class Order(models.Model):
@@ -113,6 +113,7 @@ class Order(models.Model):
 class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
+    qr_code = models.CharField(max_length=255, blank=True)
     order = models.ForeignKey(
         Order,
         related_name="tickets",
