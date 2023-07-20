@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>{{ movie.title }}</h4>
+    <p>
+      {% for session in movie.sessions.all %}
+        <a href="{% url 'cinema:movie-session-detail' pk=session.id %}">{{ session.show_time }}</a>
+      {% endfor %}
+
+    </p>
+    <p>{% for actor in movie.actors.all %}
+      {{ actor.full_name }}
+      {% endfor %}
+    </p>
+    <p>
+    {% for producer in movie.producers.all %}
+      {{ producer.full_name }}
+    {% endfor %}
+    </p>
+    <p>
+      {{ movie.description }}
+    </p>
+    <p>
+      {{ movie.country }}
+    </p>
+    <p>
+      {{ movie.release_date }}
+    </p>
+{% endblock %}

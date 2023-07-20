@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ moviesession.movie }}</h2>
+  <p>{{ moviesession.show_time }}</p>
+  <form action="" method="post">
+  {% csrf_token %}
+  {% for row in seat_matrix %}
+
+    <p>
+      {% for seat in row %}
+
+        {% if seat == 1 %}
+          <input type="radio"
+                 class="btn-check"
+
+                 name="options"
+                 id="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                 autocomplete="off"
+                 disabled>
+          <label class="btn btn-secondary"
+                 for="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                 style="width: 3rem;"
+          >
+            {{ forloop.counter }}
+          </label>
+          {% else %}
+
+          <input type="checkbox"
+                 class="btn-check"
+                 id="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                 name="chosen_seats"
+{#                 checked autocomplete="off"#}
+                 value="{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+          >
+          <label class="btn btn-outline-primary"
+                 style="width: 3rem;"
+                 for="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}">
+            {{ forloop.counter }}
+          </label>
+        {% endif %}
+
+      {% endfor %}
+    </p>
+  {% endfor %}
+  <input
+          type="submit"
+          value="Buy"
+      >
+  </form>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Recently released movies</h1>
+  {% for movie in movie_list %}
+    <h4><a href="{% url 'cinema:movie-detail' pk=movie.id %}">{{ movie.title }}</a></h4>
+    <p>{% for actor in movie.actors.all %}
+      {{ actor.full_name }}
+      {% endfor %}
+    </p>
+    <p>
+    {% for producer in movie.producers.all %}
+      {{ producer.full_name }}
+    {% endfor %}
+    </p>
+    <p>
+      {{ movie.description }}
+    </p>
+    <p>
+      {{ movie.country }}
+    </p>
+    <p>
+      {{ movie.release_date }}
+    </p>
+  {% endfor %}
+
+{% endblock %}
