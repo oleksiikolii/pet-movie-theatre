@@ -30,7 +30,6 @@
                  class="btn-check"
                  id="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
                  name="chosen_seats"
-{#                 checked autocomplete="off"#}
                  value="{{ forloop.parentloop.counter }},{{ forloop.counter }}"
           >
           <label class="btn btn-outline-primary"
@@ -43,9 +42,13 @@
       {% endfor %}
     </p>
   {% endfor %}
+    <input type="hidden"
+           name="movie_session_id",
+           value="{{ moviesession.id }}"
+    >
   <input
           type="submit"
-          value="Buy"
+          value="Purchase"
       >
   </form>
 

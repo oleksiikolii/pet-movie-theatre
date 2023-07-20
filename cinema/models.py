@@ -101,7 +101,7 @@ class Order(models.Model):
         related_name="orders",
         on_delete=models.CASCADE
     )
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]

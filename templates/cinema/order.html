@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Lets imagine here you've paid for tickets</h1>
+  <h3>Your tickets</h3>
+  {% for ticket in ticket_list.all %}
+{#    <p>{{ ticket.movie_session }}, row:{{ ticket.row }}, seat: {{ ticket.seat }}</p>#}
+    <div class="card" style="margin-bottom: 10px;">
+      <div class="card-body">
+        <h5 class="card-title">{{ ticket.movie_session.movie.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ ticket.movie_session.show_time }}</h6>
+        <a href="#" class="card-link">Download PDF</a>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}

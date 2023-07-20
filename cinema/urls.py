@@ -1,11 +1,23 @@
+from django.contrib.auth.views import LoginView
 from django.urls import path
 
-from cinema.views import IndexView, MovieDetailView, SessionDetailView
+from cinema.views import IndexView, MovieDetailView, SessionDetailView, CreateUserView, TicketListView
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
+    path(
+        "login/",
+        LoginView.as_view(),
+        name="login"
+    ),
+    path(
+        "register/",
+        CreateUserView.as_view(),
+        name="register"
+    ),
     path("movie/<int:pk>/", MovieDetailView.as_view(), name="movie-detail"),
-    path("movie/session/<int:pk>/", SessionDetailView.as_view(), name="movie-session-detail")
+    path("movie/session/<int:pk>/", SessionDetailView.as_view(), name="movie-session-detail"),
+    path("orders/", TicketListView.as_view(), name="ticket-listview")
 ]
 
 app_name = "cinema"
