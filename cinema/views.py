@@ -1,3 +1,5 @@
+import datetime
+
 import qrcode
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,6 +21,9 @@ from cinema.models import (
 from django.views.generic import CreateView
 
 
+TODAY = datetime.date(year=2023, month=7, day=21)
+
+
 class CreateUserView(CreateView):
     model = Guest
     form_class = GuestCreationForm
@@ -33,24 +38,22 @@ class CreateUserView(CreateView):
 
 class IndexView(generic.ListView):
     model = Movie
-    queryset = Movie.objects.prefetch_related(
-        "actors"
-    ).prefetch_related(
-        "producers"
-    ).order_by(
-        "-release_date"
-    )
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+
+        day = self.request.GET.get("day")
+        if not day:
+            day = "today"
+
+        context["day"] = day
+        return context
 
     def get_queryset(self):
-        search = self.request.GET.get("search", "")
-        queryset = Movie.objects.prefetch_related(
-            "actors"
-        ).prefetch_related(
-            "producers"
-        ).order_by(
-            "-release_date"
-        )
+        queryset = Movie.objects.prefetch_related("genres")
 
+        search = self.request.GET.get("search", "")
         if search:
             queryset = queryset.filter(title__icontains=search)
 
@@ -145,7 +148,7 @@ def create_order_with_tickets(
             movie_session=movie_session
         )
         create_qrcode(ticket)
-        ticket.qr_code = f"media/{ticket.id}.png"
+        ticket.qr_code = f"media/qr_codes/{ticket.id}.png"
         ticket.save()
 
 

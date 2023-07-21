@@ -11,7 +11,8 @@ class Guest(AbstractUser):
 
 class Genre(models.Model):
     name = models.CharField(
-        max_length=255
+        max_length=255,
+        unique=True
     )
 
     def __str__(self) -> str:
@@ -20,7 +21,8 @@ class Genre(models.Model):
 
 class Actor(models.Model):
     full_name = models.CharField(
-        max_length=255
+        max_length=255,
+        unique=True
     )
 
     def __str__(self) -> str:
@@ -29,7 +31,8 @@ class Actor(models.Model):
 
 class Producer(models.Model):
     full_name = models.CharField(
-        max_length=255
+        max_length=255,
+        unique=True
     )
 
     def __str__(self) -> str:
@@ -58,9 +61,21 @@ class Movie(models.Model):
         Genre,
         related_name="movies"
     )
+    poster_link = models.CharField(max_length=512)
 
     def __str__(self) -> str:
         return self.title
+
+    def get_today_movie_sessions(self):
+        return MovieSession.objects.filter(
+            movie=self,
+            show_time__day=21 # Dates are hard coded due to showcase nature of this site
+        ).order_by("show_time")                    # We can easily swap it with datetime.date.today().day
+
+    def get_tomorrow_movie_sessions(self):
+        query = MovieSession.objects.select_related("movie")
+        return query.filter(movie=self, show_time__day=22)
+
 
 
 class CinemaHall(models.Model):
@@ -92,7 +107,10 @@ class MovieSession(models.Model):
     show_time = models.DateTimeField()
 
     def __str__(self) -> str:
-        return f"{self.show_time.strftime('%a %d %b %Y, %H:%M')}"
+        return self.show_time.strftime('%a %d %b %Y, %H:%M')
+
+    def get_time(self) -> str:
+        return self.show_time.strftime('%H:%M')
 
 
 class Order(models.Model):

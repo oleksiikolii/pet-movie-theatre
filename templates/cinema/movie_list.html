@@ -1,27 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
+
   <h1>Recently released movies</h1>
+  <br>
   {% for movie in movie_list %}
-    <h4><a href="{% url 'cinema:movie-detail' pk=movie.id %}">{{ movie.title }}</a></h4>
-    <p>{% for actor in movie.actors.all %}
-      {{ actor.full_name }}
-      {% endfor %}
-    </p>
-    <p>
-    {% for producer in movie.producers.all %}
-      {{ producer.full_name }}
-    {% endfor %}
-    </p>
-    <p>
-      {{ movie.description }}
-    </p>
-    <p>
-      {{ movie.country }}
-    </p>
-    <p>
-      {{ movie.release_date }}
-    </p>
+    <div class="card mb-3" style="border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;">
+      <div class="row g-0">
+        <div class="col-md-3">
+          {% load static %}
+          <img src="{% static movie.poster_link %}" alt=""
+               class="img-fluid"
+               style="border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;"
+          >
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h2 class="card-title">
+              <a href="{% url 'cinema:movie-detail' pk=movie.id %}"
+                 class="card-link dark-link"
+                 style="color: black;"
+              >
+                 {{ movie.title }}
+              </a>
+            </h2>
+            <div class="card-text">
+
+            {% if day == "today" %}
+              {% for session in movie.get_today_movie_sessions.all %}
+                <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
+                   class="btn btn-outline-secondary"
+                >
+                  {{ session.get_time }}
+                </a>
+                {% empty %}
+                <p class="card-text">
+              <small class="text-muted">
+                There are no available session.
+              </small>
+            </p>
+              {% endfor %}
+            {% elif day == "tomorrow" %}
+              {% for session in movie.get_tomorrow_movie_sessions.all %}
+                <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
+                   class="btn btn-outline-secondary"
+                >
+                  {{ session.get_time }}
+                </a>
+              {% endfor %}
+            {% endif %}
+            </div>
+            <div class="card-text">
+              {% for genre in movie.genres.all %}
+               {{ genre }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </div>
+            <p class="card-text">
+              <small class="text-muted">
+                {{ movie.country }}
+              </small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endfor %}
 
 {% endblock %}
