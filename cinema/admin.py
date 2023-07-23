@@ -38,4 +38,6 @@ class CinemaHallAdmin(admin.ModelAdmin):
 
 @admin.register(MovieSession)
 class MovieSessionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["movie", "show_time", "cinema_hall"]
+    ordering = ["movie", "show_time"]
+
