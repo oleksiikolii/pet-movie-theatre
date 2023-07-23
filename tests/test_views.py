@@ -1,12 +1,11 @@
 import datetime
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.test import TestCase
 from django.urls import reverse
 
 from cinema.models import Movie, MovieSession, CinemaHall, Ticket, Order
-from cinema.views import IndexView, SessionDetailView, TicketListView
+from cinema.views import SessionDetailView, TicketListView
 
 
 class TestIndexView(TestCase):
@@ -18,7 +17,7 @@ class TestIndexView(TestCase):
         self.client.force_login(self.user)
 
     def test_index_view_context(self):
-        movie = Movie.objects.create(
+        Movie.objects.create(
             title="Test Movie Title",
             description="Some text to hold this place",
             release_date="2000-01-01",
@@ -26,7 +25,7 @@ class TestIndexView(TestCase):
             country="USA",
             poster_link="link/to/img.png"
         )
-        movie2 = Movie.objects.create(
+        Movie.objects.create(
             title="Test Movie Title 2",
             description="Some text to hold this place 2",
             release_date="2000-01-02",
@@ -64,7 +63,7 @@ class SessionDetailViewTest(TestCase):
         )
 
     def test_post(self):
-        view = SessionDetailView()
+        SessionDetailView()
         request = self.client.post(
             reverse(
                 "cinema:movie-session-detail",
@@ -114,4 +113,3 @@ class TicketListViewTest(TestCase):
 
         self.assertEqual(queryset.count(), 1)
         self.assertEqual(queryset[0], self.ticket)
-

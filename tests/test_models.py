@@ -3,7 +3,16 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from cinema.models import Genre, Producer, Actor, Movie, CinemaHall, MovieSession, Order, Ticket
+from cinema.models import (
+    Genre,
+    Producer,
+    Actor,
+    Movie,
+    CinemaHall,
+    MovieSession,
+    Order,
+    Ticket
+)
 
 
 class TestGenre(TestCase):
@@ -33,7 +42,9 @@ class TestProducer(TestCase):
 class TestMovie(TestCase):
     def setUp(self) -> None:
         james_cameron = Producer.objects.create(full_name="James Cameron")
-        christopher_nolan = Producer.objects.create(full_name="Christopher Nolan")
+        christopher_nolan = Producer.objects.create(
+            full_name="Christopher Nolan"
+        )
 
         action = Genre.objects.create(name="Action")
         drama = Genre.objects.create(name="Drama")
@@ -51,9 +62,11 @@ class TestMovie(TestCase):
 
         self.movie = movie
 
-        self.hall = CinemaHall.objects.create(name="test hall",
-                                         rows=10,
-                                         seats_in_row=10)
+        self.hall = CinemaHall.objects.create(
+            name="test hall",
+            rows=10,
+            seats_in_row=10
+        )
         self.session1 = MovieSession.objects.create(
             movie=movie,
             cinema_hall=self.hall,

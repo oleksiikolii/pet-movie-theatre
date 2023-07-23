@@ -10,13 +10,7 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 
 from cinema.forms import GuestCreationForm
-from cinema.models import (
-    Movie,
-    MovieSession,
-    Order,
-    Guest,
-    Ticket
-)
+from cinema.models import Movie, MovieSession, Order, Guest, Ticket
 
 from django.views.generic import CreateView
 
@@ -74,7 +68,7 @@ class SessionDetailView(generic.DetailView):
     @staticmethod
     def post(request, **kwargs):
         chosen_seats = request.POST.getlist("chosen_seats")
-        movie_session_id = request.POST.get('movie_session_id')
+        movie_session_id = request.POST.get("movie_session_id")
 
         if movie_session_id:
             movie_session = MovieSession.objects.get(id=movie_session_id)
@@ -98,16 +92,13 @@ class SessionDetailView(generic.DetailView):
 
         tickets = list(movie_session.tickets.all())
 
-        seats_taken = [
-            (ticket.row, ticket.seat)
-            for ticket in tickets
-        ]
+        seats_taken = [(ticket.row, ticket.seat) for ticket in tickets]
 
         seat_matrix = [
             [
                 1 if (row, col) in seats_taken else 0
                 for col in range(1, cols + 1)
-             ]
+            ]
             for row in range(1, rows + 1)
         ]
 
@@ -130,14 +121,12 @@ class LogoutView(View):
     @staticmethod
     def get(request):
         logout(request)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
 
 
 @transaction.atomic
 def create_order_with_tickets(
-        chosen_seats: list,
-        movie_session: MovieSession,
-        request
+    chosen_seats: list, movie_session: MovieSession, request
 ) -> None:
     order = Order.objects.create(guest=request.user)
     for item in chosen_seats:
@@ -146,10 +135,7 @@ def create_order_with_tickets(
         seat = int(item[-1])
 
         ticket = Ticket.objects.create(
-            row=row,
-            seat=seat,
-            order=order,
-            movie_session=movie_session
+            row=row, seat=seat, order=order, movie_session=movie_session
         )
         create_qrcode(ticket)
         ticket.qr_code = f"media/qr_codes/{ticket.id}.png"
