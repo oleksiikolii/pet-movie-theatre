@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row movie-detail-row">
+    <div class="col-sm-4" style="margin-left: 0">
+      {% load static %}
+      <img src="{% static movie.poster_link %}"
+           alt=""
+           class="poster-movie-detail">
+    </div>
+  <div class="col-sm-4 info-movie-detail">
+    <h2>{{ movie.title }}</h2>
+    <p>
+      {% for producer in movie.producers.all %}
+        Producer: {{ producer.full_name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p>
+      Actors:
+      {% for actor in movie.actors.all %}
+      {{ actor.full_name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p>
+      Country: {{ movie.country }}
+    </p>
+    <p>
+      Release date: {{ movie.release_date }}
+    </p>
+    <p>
+      Genres:
+      {% for genre in movie.genres.all %}
+        {{ genre }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  </div>
+    <div class="col-4">
+      <div class="session-block">
+        <p>Today sessions</p>
+        {% for session in movie.get_today_movie_sessions.all %}
+            <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
+               class="btn btn-light session-btn"
+            >
+              {{ session.get_time }}
+            </a>
+            {% empty %}
+            <p class="card-text">
+          <small class="text-muted">
+            There are no available session.
+          </small>
+        {% endfor %}
+      </div>
+
+      <hr>
+
+      <div class="session-block">
+        <p>Tomorrow sessions</p>
+        {% for session in movie.get_tomorrow_movie_sessions.all %}
+            <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
+               class="btn btn-light session-btn"
+            >
+              {{ session.get_time }}
+            </a>
+            {% empty %}
+            <p class="card-text">
+          <small class="text-muted">
+            There are no available session.
+          </small>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="row">
+      <p>
+        {{ movie.description }}
+      </p>
+    </div>
+  </div>
+{% endblock %}

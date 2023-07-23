@@ -1,0 +1,62 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-center sidebar-block">
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      {% if day == "today" %}
+        <a href="/?day=today"
+           class="btn btn-light"
+           aria-current="page">
+        Today
+        </a>
+        {% else %}
+        <a href="/?day=today"
+           class="nav-link link-light"
+           aria-current="page">
+          Today
+        </a>
+      {% endif %}
+
+    </li>
+    <li>
+      {% if day == "tomorrow" %}
+        <a href="/?day=tomorrow"
+           class="btn btn-light"
+           aria-current="page">
+          Tomorrow
+        </a>
+        {% else %}
+        <a href="/?day=tomorrow"
+           class="nav-link link-light"
+           aria-current="page">
+          Tomorrow
+        </a>
+      {% endif %}
+    </li>
+    <li>
+      <a href="{% url 'cinema:ticket-listview' %}"
+         class="nav-link link-light">
+        Your tickets
+      </a>
+    </li>
+  </ul>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    {% if not user.is_authenticated %}
+      <li>
+        <a href="{% url 'cinema:login' %}"
+           class="nav-link muted">
+          Login
+        </a>
+      </li>
+      {% else %}
+        {{ user.username }}
+      <li>
+        <a href="{% url 'cinema:logout' %}"
+           class="nav-link muted"
+        >
+          Logout
+        </a>
+      </li>
+    {% endif %}
+
+  </ul>
+</div>
