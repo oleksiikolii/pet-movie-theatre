@@ -40,4 +40,3 @@ class CinemaHallAdmin(admin.ModelAdmin):
 class MovieSessionAdmin(admin.ModelAdmin):
     list_display = ["movie", "show_time", "cinema_hall"]
     ordering = ["movie", "show_time"]
-
