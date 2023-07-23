@@ -70,12 +70,14 @@ class Movie(models.Model):
         return MovieSession.objects.filter(
             movie=self,
             show_time__day=21 # Dates are hard coded due to showcase nature of this site
-        ).order_by("show_time")                    # We can easily swap it with datetime.date.today().day
+        )                # We can easily swap it with datetime.date.today().day
 
     def get_tomorrow_movie_sessions(self):
         query = MovieSession.objects.select_related("movie")
         return query.filter(movie=self, show_time__day=22)
 
+    def get_rating(self):
+        return self.rating / 10
 
 
 class CinemaHall(models.Model):
@@ -105,6 +107,9 @@ class MovieSession(models.Model):
         on_delete=models.CASCADE
     )
     show_time = models.DateTimeField()
+
+    class Meta:
+        ordering = ["show_time"]
 
     def __str__(self) -> str:
         return self.show_time.strftime('%a %d %b %Y, %H:%M')

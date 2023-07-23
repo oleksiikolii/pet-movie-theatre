@@ -1,0 +1,57 @@
+body {
+    background-color: #262626;
+    color: #f3f3f3;
+}
+
+.movie-card-list {
+    border-radius: 1rem;
+    background-color: #1a1a1a;
+}
+
+.poster-movie-list {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.title-movie-list {
+    text-decoration: none;
+    color: #ccc;
+}
+
+.movie-detail-row {
+    margin-top: 2rem;
+}
+
+.poster-movie-detail {
+    width: 100%;
+}
+
+.info-movie-detail {
+    color: white;
+}
+
+.session-block {
+    text-align: center;
+    color: #fff;
+}
+
+.session-btn {
+    margin-bottom: 0.5rem;
+}
+
+.order-ticket-card {
+    color: #1a1a1a;
+    max-width: 540px;
+    background-color: #f3f3f3;
+}
+
+.sidebar-block {
+    background-color: #1a1a1a;
+    height: 30vh;
+    position: sticky;
+    color: #f3f3f3;
+}
+
+.display-pic {
+    margin-bottom: 10vh;
+}

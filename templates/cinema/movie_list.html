@@ -5,24 +5,18 @@
   <h1>Recently released movies</h1>
   <br>
   {% for movie in movie_list %}
-    <div class="card mb-3" style="border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;">
+    <div class="card mb-3 movie-card-list">
       <div class="row g-0">
         <div class="col-md-3">
           {% load static %}
           <img src="{% static movie.poster_link %}" alt=""
-               class="img-fluid"
-               style="border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;"
-          >
+               class="img-fluid poster-movie-list">
         </div>
         <div class="col-md-9">
           <div class="card-body">
             <h2 class="card-title">
               <a href="{% url 'cinema:movie-detail' pk=movie.id %}"
-                 class="card-link dark-link"
-                 style="color: black;"
-              >
+                 class="card-link link-light title-movie-list">
                  {{ movie.title }}
               </a>
             </h2>
@@ -31,7 +25,7 @@
             {% if day == "today" %}
               {% for session in movie.get_today_movie_sessions.all %}
                 <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
-                   class="btn btn-outline-secondary"
+                   class="btn btn-secondary"
                 >
                   {{ session.get_time }}
                 </a>
@@ -45,7 +39,7 @@
             {% elif day == "tomorrow" %}
               {% for session in movie.get_tomorrow_movie_sessions.all %}
                 <a href="{% url 'cinema:movie-session-detail' pk=session.id %}"
-                   class="btn btn-outline-secondary"
+                   class="btn btn-secondary"
                 >
                   {{ session.get_time }}
                 </a>
@@ -53,14 +47,38 @@
             {% endif %}
             </div>
             <div class="card-text">
-              {% for genre in movie.genres.all %}
-               {{ genre }}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
+              <div class="text-muted">
+              Producers:
+                {% for producer in movie.producers.all %}
+                 {{ producer }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="text-muted">
+                Cast:
+                {% for actor in movie.actors.all %}
+                 {{ actor }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="card-text">
+
             </div>
             <p class="card-text">
-              <small class="text-muted">
+              <div class="text-muted">
                 {{ movie.country }}
-              </small>
+              </div>
+            </p>
+            <p>
+              <div class="text-muted">
+                ⭐<b>{{ movie.get_rating }}</b>
+              </div>
+            </p>
+            <p>
+              <div class="text-muted">
+                {{ movie.release_date }}
+              </div>
             </p>
           </div>
         </div>

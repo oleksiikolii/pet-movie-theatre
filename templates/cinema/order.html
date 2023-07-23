@@ -7,7 +7,7 @@
 
   {% for ticket in ticket_list.all %}
 
-    <div class="card mb-3" style="max-width: 540px;">
+    <div class="card mb-3 order-ticket-card">
       <div class="row g-0">
         <div class="col-md-4">
           {% load static %}
@@ -19,20 +19,24 @@
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">
-              {{ ticket.movie_session.movie.title }}
+              Movie: {{ ticket.movie_session.movie.title }}
             </h5>
             <h6 class="card-subtitle mb-2 text-muted">
               {{ ticket.movie_session }}
             </h6>
             <p class="card-text">
-              ROW: <b>{{ ticket.row }}</b>, SEAT: <b>{{ ticket.seat }}</b>
+              ROW: <b>{{ ticket.row }}</b> | SEAT: <b>{{ ticket.seat }}</b>
               <br>
               HALL: <b>{{ ticket.movie_session.cinema_hall.name }}</b>
               <br>
             </p>
             <p class="card-text">
             </p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <p class="card-text">
+              <small class="text-muted">
+                {{ ticket.order.created_at }}
+              </small>
+            </p>
           </div>
         </div>
       </div>

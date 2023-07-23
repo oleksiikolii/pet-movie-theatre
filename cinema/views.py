@@ -15,7 +15,7 @@ from cinema.models import (
     MovieSession,
     Order,
     Guest,
-    Ticket
+    Ticket, CinemaHall
 )
 
 from django.views.generic import CreateView
@@ -44,10 +44,13 @@ class IndexView(generic.ListView):
         context = super(IndexView, self).get_context_data(**kwargs)
 
         day = self.request.GET.get("day")
+        search = self.request.GET.get("search")
         if not day:
             day = "today"
 
         context["day"] = day
+        context["search"] = search
+
         return context
 
     def get_queryset(self):
@@ -164,4 +167,4 @@ def create_qrcode(ticket: Ticket):
     qr.add_data(data)
     qr.make(fit=True)
     image = qr.make_image(fill_color="black", back_color="white")
-    image.save(f"static/media/{ticket.id}.png")
+    image.save(f"static/media/qr_codes/{ticket.id}.png")

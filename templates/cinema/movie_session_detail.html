@@ -1,67 +1,82 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{{ moviesession.movie }}</h2>
+  <div class="row">
+  <h3 class="muted">{{ moviesession.movie }}</h3>
   <p>{{ moviesession.show_time }}</p>
-  <form action="" method="post">
-  {% csrf_token %}
-  {% for row in seat_matrix %}
+  </div>
+  <div class="row text-center display-pic">
+    <h2>DISPLAY</h2>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 21" fill="#061420">
+      <path d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+    </svg>
+  </div>
+  <div class="row text-center">
+    <form action="" method="post">
+      {% csrf_token %}
+      {% for row in seat_matrix %}
+        <p>
+          {% for seat in row %}
+            {% if seat == 1 %}
+              <input type="radio"
+                     class="btn-check"
 
-    <p>
-      {% for seat in row %}
+                     name="options"
+                     id="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                     autocomplete="off"
+                     disabled>
+              <label class="btn btn-secondary"
+                     for="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                     style="width: 3rem;"
+              >
+                {{ forloop.counter }}
+              </label>
+              {% else %}
+              <input type="checkbox"
+                     class="btn-check"
+                     id="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+                     name="chosen_seats"
+                     value="{{ forloop.parentloop.counter }},{{ forloop.counter }}"
+              >
+              <label class="btn btn-outline-primary"
+                     style="width: 3rem;"
+                     for="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}">
+                {{ forloop.counter }}
+              </label>
+            {% endif %}
 
-        {% if seat == 1 %}
-          <input type="radio"
-                 class="btn-check"
-
-                 name="options"
-                 id="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
-                 autocomplete="off"
-                 disabled>
-          <label class="btn btn-secondary"
-                 for="option-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
-                 style="width: 3rem;"
-          >
-            {{ forloop.counter }}
-          </label>
-          {% else %}
-
-          <input type="checkbox"
-                 class="btn-check"
-                 id="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}"
-                 name="chosen_seats"
-                 value="{{ forloop.parentloop.counter }},{{ forloop.counter }}"
-          >
-          <label class="btn btn-outline-primary"
-                 style="width: 3rem;"
-                 for="btn-check-{{ forloop.parentloop.counter }},{{ forloop.counter }}">
-            {{ forloop.counter }}
-          </label>
-        {% endif %}
-
+          {% endfor %}
+        </p>
       {% endfor %}
-    </p>
-  {% endfor %}
-    <input type="hidden"
-           name="movie_session_id",
-           value="{{ moviesession.id }}"
-    >
-  {% if user.is_authenticated %}
-    <input
-          type="submit"
-          value="Purchase"
-      >
-    {% else %}
-    <input
-          type="submit"
-          value="Purchase"
-          disabled
-      >
-    <span> You need to
-    <a href="{% url 'cinema:login' %}">login</a>
-     first</span>
-  {% endif %}
+        <input type="hidden"
+               name="movie_session_id",
+               value="{{ moviesession.id }}"
+        >
+    <div class="row">
+      <div class="col">
+        {% if user.is_authenticated %}
+          <input
+                type="submit"
+                value="Purchase tickets"
+                class="btn btn-light  float-right"
+            >
+          {% else %}
+          <div class="col">
+            <input
+                  type="submit"
+                  value="Purchase tickets"
+                  class="btn btn-light"
+                  disabled
+              >
+            <span> You need to
+            <a href="{% url 'cinema:login' %}">login</a>
+             first</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    </form>
 
-  </form>
+  </div>
 
 {% endblock %}
