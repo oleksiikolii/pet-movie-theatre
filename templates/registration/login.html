@@ -7,9 +7,14 @@
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit"
-           value="Login">
-  </form>
-  <a href="{% url "cinema:register" %}">
+           value="Login"
+           class="btn btn-light"
+    >
+  <a href="{% url "cinema:register" %}"
+     class="link link-light"
+  >
     Don't have an account yet?
   </a>
+  </form>
+
 {% endblock %}

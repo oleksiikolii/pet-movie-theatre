@@ -15,7 +15,7 @@ from cinema.models import (
     MovieSession,
     Order,
     Guest,
-    Ticket, CinemaHall
+    Ticket
 )
 
 from django.views.generic import CreateView
@@ -40,6 +40,15 @@ class IndexView(generic.ListView):
     model = Movie
     paginate_by = 5
 
+    def get_queryset(self):
+        queryset = Movie.objects.prefetch_related("genres")
+
+        search = self.request.GET.get("search", "")
+        if search:
+            queryset = queryset.filter(title__icontains=search)
+
+        return queryset
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
 
@@ -52,15 +61,6 @@ class IndexView(generic.ListView):
         context["search"] = search
 
         return context
-
-    def get_queryset(self):
-        queryset = Movie.objects.prefetch_related("genres")
-
-        search = self.request.GET.get("search", "")
-        if search:
-            queryset = queryset.filter(title__icontains=search)
-
-        return queryset
 
 
 class MovieDetailView(generic.DetailView):
@@ -93,7 +93,8 @@ class SessionDetailView(generic.DetailView):
         context = super(SessionDetailView, self).get_context_data(**kwargs)
 
         movie_session = context.get("moviesession")
-        rows, cols = movie_session.cinema_hall.rows, movie_session.cinema_hall.seats_in_row
+        rows = movie_session.cinema_hall.rows
+        cols = movie_session.cinema_hall.seats_in_row
 
         tickets = list(movie_session.tickets.all())
 
