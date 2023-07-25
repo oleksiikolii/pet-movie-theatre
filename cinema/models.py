@@ -48,8 +48,7 @@ class Movie(models.Model):
         return MovieSession.objects.filter(
             movie=self,
             show_time__day=21,
-            # Dates are hard coded due to showcase nature of this site
-        )   # We can easily swap it with datetime.date.today().day
+        )
 
     def get_tomorrow_movie_sessions(self):
         query = MovieSession.objects.select_related("movie")

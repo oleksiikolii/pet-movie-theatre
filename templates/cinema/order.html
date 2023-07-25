@@ -5,15 +5,15 @@
 
   <h3>Your tickets</h3>
 
-  {% for ticket in ticket_list.all %}
+  {% for ticket in ticket_list %}
 
     <div class="card mb-3 order-ticket-card">
       <div class="row g-0">
         <div class="col-md-4">
-          {% load static %}
-            <img src="{% static ticket.qr_code %}" alt=""
-                 class="card-img-top float-right"
-            >
+          <div class="card-img-top float-right">
+            {% load qr_code %}
+            {% qr_from_text ticket.qr_code size="t" image_format="png" error_correction="L" %}
+          </div>
         </div>
 
         <div class="col-md-8">
