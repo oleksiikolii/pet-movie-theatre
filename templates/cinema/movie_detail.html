@@ -4,7 +4,7 @@
   <div class="row movie-detail-row">
     <div class="col-sm-4" style="margin-left: 0">
       {% load static %}
-      <img src="{% static movie.poster_link %}"
+      <img src="{{ movie.poster_link }}"
            alt=""
            class="poster-movie-detail">
     </div>
