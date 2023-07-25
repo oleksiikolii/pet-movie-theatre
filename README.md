@@ -23,7 +23,7 @@ shows some old, but gold movies such as "Showshank redemption" and the "Avatar" 
 * [Install project](#setup)
 * Checkout some movies on the home page
 * Login/Register
-* Choose day in the right sidebar
+* Choose day in the sidebar
 * Choose session below the title or on movie detail page
 * Pick seats
 * Click "Purchase tickets", don't be afraid they are free
