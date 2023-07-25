@@ -1,6 +1,5 @@
 import datetime
 
-import qrcode
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -112,9 +111,15 @@ class TicketListView(LoginRequiredMixin, generic.ListView):
     template_name = "cinema/order.html"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(order__guest=self.request.user)
-        return queryset
+        return Ticket.objects.filter(
+            order__guest=self.request.user
+        ).select_related(
+            "movie_session"
+        ).select_related(
+            "movie_session__cinema_hall"
+        ).select_related(
+            "movie_session__movie"
+        ).select_related("order")
 
 
 class LogoutView(View):
@@ -133,25 +138,17 @@ def create_order_with_tickets(
         item = item.split(",")
         row = int(item[0])
         seat = int(item[-1])
+        qr_token = f"{row}:{seat}:{movie_session}"
 
-        ticket = Ticket.objects.create(
-            row=row, seat=seat, order=order, movie_session=movie_session
+        Ticket.objects.create(
+            row=row,
+            seat=seat,
+            order=order,
+            qr_code=qr_token,
+            movie_session=movie_session,
         )
-        create_qrcode(ticket)
-        ticket.qr_code = f"media/qr_codes/{ticket.id}.png"
-        ticket.save()
 
 
-def create_qrcode(ticket: Ticket):
-    data = (
-        f"{ticket.id}_"
-        f"{ticket.row}_"
-        f"{ticket.seat}_"
-        f"{ticket.order.id}_"
-        f"{ticket.movie_session.id}"
-    )
-    qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data(data)
-    qr.make(fit=True)
-    image = qr.make_image(fill_color="black", back_color="white")
-    image.save(f"static/media/qr_codes/{ticket.id}.png")
+
+
+
