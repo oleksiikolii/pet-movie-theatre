@@ -77,7 +77,7 @@ class SessionDetailView(generic.DetailView):
         create_order_with_tickets(
             chosen_seats=chosen_seats,
             movie_session=movie_session,
-            request=request
+            request=request,
         )
 
         return redirect("cinema:ticket-listview")
@@ -111,15 +111,13 @@ class TicketListView(LoginRequiredMixin, generic.ListView):
     template_name = "cinema/order.html"
 
     def get_queryset(self):
-        return Ticket.objects.filter(
-            order__guest=self.request.user
-        ).select_related(
-            "movie_session"
-        ).select_related(
-            "movie_session__cinema_hall"
-        ).select_related(
-            "movie_session__movie"
-        ).select_related("order")
+        return (
+            Ticket.objects.filter(order__guest=self.request.user)
+            .select_related("movie_session")
+            .select_related("movie_session__cinema_hall")
+            .select_related("movie_session__movie")
+            .select_related("order")
+        )
 
 
 class LogoutView(View):
@@ -147,8 +145,3 @@ def create_order_with_tickets(
             qr_code=qr_token,
             movie_session=movie_session,
         )
-
-
-
-
-

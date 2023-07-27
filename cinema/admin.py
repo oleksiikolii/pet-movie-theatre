@@ -6,34 +6,15 @@ from cinema.models import (
     Actor,
     Producer,
     CinemaHall,
-    MovieSession
+    MovieSession,
 )
 
 
-# Register your models here.
-@admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Genre)
-class GenreAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Producer)
-class ProducerAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(CinemaHall)
-class CinemaHallAdmin(admin.ModelAdmin):
-    pass
+admin.site.register(Movie)
+admin.site.register(Genre)
+admin.site.register(Actor)
+admin.site.register(Producer)
+admin.site.register(CinemaHall)
 
 
 @admin.register(MovieSession)

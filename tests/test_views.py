@@ -11,8 +11,7 @@ from cinema.views import SessionDetailView, TicketListView
 class TestIndexView(TestCase):
     def setUp(self) -> None:
         self.user = get_user_model().objects.create_user(
-            username="TestUser",
-            password="StrongPassword123"
+            username="TestUser", password="StrongPassword123"
         )
         self.client.force_login(self.user)
 
@@ -23,7 +22,7 @@ class TestIndexView(TestCase):
             release_date="2000-01-01",
             rating=55,
             country="USA",
-            poster_link="link/to/img.png"
+            poster_link="link/to/img.png",
         )
         Movie.objects.create(
             title="Test Movie Title 2",
@@ -31,34 +30,28 @@ class TestIndexView(TestCase):
             release_date="2000-01-02",
             rating=56,
             country="USA",
-            poster_link="link/to/img.png"
+            poster_link="link/to/img.png",
         )
         response = self.client.get(reverse("cinema:index"))
         movies = Movie.objects.all()
-        self.assertEqual(
-            list(response.context["movie_list"]),
-            list(movies)
-        )
+        self.assertEqual(list(response.context["movie_list"]), list(movies))
 
 
 class SessionDetailViewTest(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="TestUser",
-            password="StrongPassword123"
+            username="TestUser", password="StrongPassword123"
         )
         self.client.force_login(self.user)
         self.movie_session = MovieSession.objects.create(
             movie=Movie.objects.create(
                 title="The Shawshank Redemption",
                 release_date="2000-01-01",
-                rating=55
+                rating=55,
             ),
             show_time=datetime.datetime.fromisoformat("2023-07-21 20:00:00"),
             cinema_hall=CinemaHall.objects.create(
-                name="Theater 1",
-                rows=5,
-                seats_in_row=5
+                name="Theater 1", rows=5, seats_in_row=5
             ),
         )
 
@@ -67,11 +60,9 @@ class SessionDetailViewTest(TestCase):
         request = self.client.post(
             reverse(
                 "cinema:movie-session-detail",
-                kwargs={"pk": self.movie_session.pk}),
-            data={
-                "chosen_seats": ["1,1", "1,2"],
-                "movie_session_id": 1
-            }
+                kwargs={"pk": self.movie_session.pk},
+            ),
+            data={"chosen_seats": ["1,1", "1,2"], "movie_session_id": 1},
         )
 
         self.assertEqual(request.status_code, 302)
@@ -81,27 +72,24 @@ class SessionDetailViewTest(TestCase):
 class TicketListViewTest(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="TestUser",
-            password="StrongPassword123"
+            username="TestUser", password="StrongPassword123"
         )
         self.movie_session = MovieSession.objects.create(
             movie=Movie.objects.create(
                 title="The Shawshank Redemption",
                 release_date="2000-01-01",
-                rating=55
+                rating=55,
             ),
             show_time=datetime.datetime.fromisoformat("2023-07-21 20:00:00"),
             cinema_hall=CinemaHall.objects.create(
-                name="Theater 1",
-                rows=5,
-                seats_in_row=5
+                name="Theater 1", rows=5, seats_in_row=5
             ),
         )
         self.ticket = Ticket.objects.create(
             movie_session=self.movie_session,
             seat="1",
             row="1",
-            order=Order.objects.create(guest=self.user)
+            order=Order.objects.create(guest=self.user),
         )
 
     def test_get_queryset(self):

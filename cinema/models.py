@@ -73,9 +73,7 @@ class CinemaHall(models.Model):
 
 class MovieSession(models.Model):
     movie = models.ForeignKey(
-        Movie,
-        related_name="sessions",
-        on_delete=models.CASCADE
+        Movie, related_name="sessions", on_delete=models.CASCADE
     )
     cinema_hall = models.ForeignKey(
         CinemaHall, related_name="sessions", on_delete=models.CASCADE
@@ -110,9 +108,7 @@ class Ticket(models.Model):
     seat = models.IntegerField()
     qr_code = models.CharField(max_length=255, blank=True)
     order = models.ForeignKey(
-        Order,
-        related_name="tickets",
-        on_delete=models.CASCADE
+        Order, related_name="tickets", on_delete=models.CASCADE
     )
     movie_session = models.ForeignKey(
         MovieSession, related_name="tickets", on_delete=models.CASCADE
